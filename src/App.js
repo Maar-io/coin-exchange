@@ -1,7 +1,15 @@
 import React from 'react';
-import './App.css';
-import Coin from './components/Coin/Coin';
+//import './App.css';
+import AppHeader from './components/AppHeader/AppHeader';
+import CoinList from './components/CoinList/CoinList';
 import AccountBalance from './components/AccountBalance/AccountBalance';
+import styled from 'styled-components'
+
+const StyledDiv = styled.div`
+    background-color: #282c34;
+    align-items: center;
+    color: lightpink;
+`;
 
 class App extends React.Component {
   constructor(props){
@@ -35,32 +43,11 @@ class App extends React.Component {
 
   render(){
     return (
-    <div className="App">
-      <header className="App-header">
-        <img src='./polka-dot.png' alt="Polkadot logo" />
-        <h1 className ="App-title">
-          Polkadot Ecosystem prices
-        </h1>
-      </header>
-      <AccountBalance amount={this.state.balance}/>
-      <table className="coin-table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Ticker</th>
-            <th>Price</th>
-          </tr>
-        </thead>
-        <tbody>
-          
-          {
-            this.state.coinData.map( ({name, ticker, price}) =>
-              <Coin key={ticker} name={name} ticker = {ticker} price={price}/>
-            )
-          }
-        </tbody>
-      </table>
-    </div>
+      <StyledDiv>
+        <AppHeader/>
+        <AccountBalance amount={this.state.balance}/>
+        <CoinList coinData={this.state.coinData}/>
+      </StyledDiv>
   )
   }
   

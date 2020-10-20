@@ -6,9 +6,18 @@ const TableData = styled.td`
     border: 1px solid;
     width: 25vh;
     color: dimgray;
+    background-color: lightpink;
+    text-align: center;
+    margin: 50px auto 50px auto;
+    font-size: 1.4rem;
+    
 `;
-
-
+/*
+display:inline-block;
+border: 1px;
+background-color: lightpink;
+color: black;
+*/
 export default class Coin extends Component {
     constructor(props) {
         super(props);
