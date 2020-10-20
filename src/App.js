@@ -3,8 +3,38 @@ import './App.css';
 import Coin from './components/Coin/Coin';
 import AccountBalance from './components/AccountBalance/AccountBalance';
 
-function App() {
-  return (
+class App extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      balance: 10000,
+      coinData: [
+        {
+          name: 'Polkadot',
+          ticker: 'DOT',
+          price: 4.2
+        },
+        {
+          name: 'Kusama',
+          ticker: 'KSM',
+          price: 38.1
+        },
+        {
+          name: 'Darwinia',
+          ticker: 'RING',
+          price: 0.031
+        },
+        {
+          name: 'Sora',
+          ticker: 'XOR',
+          price: 57.1
+        }
+      ]
+    }
+  }
+
+  render(){
+    return (
     <div className="App">
       <header className="App-header">
         <img src='./polka-dot.png' alt="Polkadot logo" />
@@ -12,7 +42,7 @@ function App() {
           Polkadot Ecosystem prices
         </h1>
       </header>
-      <AccountBalance amount={10000}/>
+      <AccountBalance amount={this.state.balance}/>
       <table className="coin-table">
         <thead>
           <tr>
@@ -23,16 +53,17 @@ function App() {
         </thead>
         <tbody>
           
-            <Coin name="Polkadot" ticker="DOT" price={4.2}/>
-            <Coin name="Kusama" ticker="KSM" price={38.4}/>
-            <Coin name="Moonbeam" ticker="MOON" price={8.2}/>
-            <Coin name="Acala" ticker="AKL" price={0.02}/>
-          
-          
+          {
+            this.state.coinData.map( ({name, ticker, price}) =>
+              <Coin key={ticker} name={name} ticker = {ticker} price={price}/>
+            )
+          }
         </tbody>
       </table>
     </div>
   )
+  }
+  
 }
 
 export default App;

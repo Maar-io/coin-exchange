@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components'
 
 const TableData = styled.td`
-    border: 1px solid magenta;
+    border: 1px solid;
     width: 25vh;
     color: dimgray;
 `;
