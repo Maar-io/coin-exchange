@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch Paprika</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</head>
+<body>
+    <h1>
+        Fetch top 20 coins from coinPaprika
+    </h1>
+    <p id="api">Welcome</p>
+    <div>
+        <table>
+            <tr>
+              <th>Name</th>
+              <th>Symbol</th>
+              <tbody id="paprikaTable"></tbody>
+            </tr>
+          </table>
+    </div>
+    <script>
+        $(document).ready(function () {
+            document.getElementById("api").innerHTML = "Connecting to https://coinpaprika.com/";
+            var content = ''
+            fetch('https://api.coinpaprika.com/v1/coins')
+                .then( response => response.json() )
+                .then( coins => {
+                    for (let i=0; i<20; ++i){
+                        const coin = coins[i]
+                        
+                        content = '<tr><td>' + coin.name + '</td>' + '<td>' + coin.symbol + '</td> </tr>'
+                        console.log(content)
+                        $('#paprikaTable').append(content);
+                    }
+                })
+                .then( () => {
+                    document.getElementById("api").innerHTML = "Done";
+                });
+        });
+    </script>
+    <noscript>Sorry, your browser does not support JavaScript!</noscript>
+</body>
+</html>
