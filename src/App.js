@@ -4,51 +4,36 @@ import AppHeader from './components/AppHeader/AppHeader';
 import CoinList from './components/CoinList/CoinList';
 import AccountBalance from './components/AccountBalance/AccountBalance';
 import styled from 'styled-components'
+import axios from 'axios';
 
 const StyledDiv = styled.div`
     background-color: #282c34;
     align-items: center;
     color: lightpink;
 `;
+const COIN_COUNT = 5;
 
 class App extends React.Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      balance: 10000,
-      showBalance: true,
-      coinData: [
-        {
-          name: 'Polkadot',
-          ticker: 'DOT',
-          price: 4.2,
-          balance: 150
-        },
-        {
-          name: 'Kusama',
-          ticker: 'KSM',
-          price: 38.1,
-          balance: 3
-        },
-        {
-          name: 'Darwinia',
-          ticker: 'RING',
-          price: 0.031,
-          balance: 101
-        },
-        {
-          name: 'Sora',
-          ticker: 'XOR',
-          price: 57.1,
-          balance: 0
-        
-        }
-      ]
-    }
-    this.handleRefresh = this.handleRefresh.bind(this);
-    this.handleVisibilityChange = this.handleVisibilityChange.bind(this);
+  state = {
+    balance: 10000,
+    showBalance: true,
+    coinData: []
   }
-
+  componentDidMount = () => {
+    axios.get('https://api.coinpaprika.com/v1/coins')
+    .then( response => {
+        let coinData = response.data.slice(0, COIN_COUNT).map(function(coin) {
+          return {
+            key: coin.id,
+            name: coin.name,
+            ticker: coin.symbol,
+            balance: 0,
+            price: 0,
+          };
+        });
+        this.setState({ coinData });
+      });
+  }
   handleVisibilityChange(){
     this.setState( function(oldState) {
       return{
