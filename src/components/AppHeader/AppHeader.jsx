@@ -18,7 +18,7 @@ export default class AppHeader extends Component {
         return (
           <Header>
             <img src='./polka-dot.png' alt="Polkadot logo" />
-            <h1 className ="App-title">
+            <h1>
               Polkadot Ecosystem prices
             </h1>
           </Header>
