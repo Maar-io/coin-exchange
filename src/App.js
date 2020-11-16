@@ -11,30 +11,36 @@ const StyledDiv = styled.div`
     align-items: center;
     color: lightpink;
 `;
-const COIN_COUNT = 5;
+const COIN_COUNT = 6;
+const COIN_URL = 'https://api.coinpaprika.com/v1/coins';
+const TICKER_URL = 'https://api.coinpaprika.com/v1/tickers/';
 
 class App extends React.Component {
   state = {
     balance: 10000,
     showBalance: true,
-    coinData: []
+    coinData: [ ]
   }
-  componentDidMount = () => {
-    axios.get('https://api.coinpaprika.com/v1/coins')
-    .then( response => {
-        let coinData = response.data.slice(0, COIN_COUNT).map(function(coin) {
-          return {
-            key: coin.id,
-            name: coin.name,
-            ticker: coin.symbol,
-            balance: 0,
-            price: 0,
-          };
-        });
-        this.setState({ coinData });
-      });
+
+  componentDidMount = async () => {
+    const response = await axios.get(COIN_URL)
+    const coinIds = response.data.slice(0, COIN_COUNT).map( coin => coin.id );
+    const promises = coinIds.map( id => axios.get( TICKER_URL + id ));
+    const coinData = await Promise.all( promises );
+    const newCoinData = coinData.map( function(response) {
+      const coin = response.data;
+      return {
+        key: coin.id,
+        name: coin.name,
+        ticker: coin.symbol,
+        balance: 0,
+        price: parseFloat(Number(coin.quotes.USD.price).toFixed(2)),
+      };
+    });
+    this.setState({ coinData: newCoinData });
   }
-  handleVisibilityChange(){
+
+  handleVisibilityChange = () => {
     this.setState( function(oldState) {
       return{
         ...oldState,
@@ -42,21 +48,18 @@ class App extends React.Component {
       }
     });
   }
-  handleRefresh(valueChangeTicker) {
-    const newCoinData = this.state.coinData.map( function( {ticker, name, price, balance} ) {
-      let newPrice = price;
-      if( valueChangeTicker === ticker) {
-        const randomPercentage = 0.995 + Math.random() * 0.01;
-        newPrice = newPrice * randomPercentage;
-      }
-      return{
-        ticker,
-        name,
-        balance,
-        price: newPrice      }
-    });
 
-    this.setState({ coinData: newCoinData});
+  handleRefresh = async (valueChangeTicker) => {
+    const keyData =  await axios.get( TICKER_URL + valueChangeTicker);
+    
+    const newCoinData = this.state.coinData.map( function( values ) {
+      let newValues = {...values};
+      if (values.key === valueChangeTicker) {
+        newValues.price = parseFloat(Number( keyData.data.quotes["USD"].price ).toFixed(4));
+      };
+      return newValues;
+    });
+    this.setState({ coinData: newCoinData });
   }
 
   render() {

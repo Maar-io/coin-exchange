@@ -19,14 +19,10 @@ background-color: lightpink;
 color: black;
 */
 export default class Coin extends Component {
-    constructor(props) {
-        super(props);
-        this.handleClick = this.handleClick.bind(this)
-    }
 
-    handleClick(event){
+    handleClick = (event) => {
         event.preventDefault();
-        this.props.handleRefresh(this.props.ticker)
+        this.props.handleRefresh(this.props.id)
     }
 
     render() {
@@ -37,7 +33,7 @@ export default class Coin extends Component {
                 <TableData>${this.props.price}</TableData>
                 {this.props.showBalance ? <TableData>{this.props.balance}</TableData> : null}
                 <TableData>
-                    <form action="#" >
+                    <form action="">
                         <button onClick={this.handleClick}>Refresh</button>
                     </form>
                 </TableData>
