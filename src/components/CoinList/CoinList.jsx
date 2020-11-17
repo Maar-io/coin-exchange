@@ -9,35 +9,33 @@ const Table = styled.table`
     font-size: 1.4rem;
     `;
 
-export default class CoinList extends Component {
-    render() {
-        return (
-            <Table>
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Ticker</th>
-                <th>Price</th>
-                {this.props.showBalance ? <th>Balance</th> : null}
-                <th>Action</th>
-            </tr>
-            </thead>
-            <tbody>
-            {
-                this.props.coinData.map( ({key, name, ticker, price, balance}) =>
-                <Coin key={key} 
-                    handleRefresh={this.props.handleRefresh}
-                    name={name} 
-                    id = {key} 
-                    price={price} 
-                    ticker={ticker}
-                    showBalance={this.props.showBalance}
-                    balance={balance} 
-                    />
-                )
-            }
-            </tbody>
-        </Table>
-        )
-    }
+export default function CoinList (props) {
+    return (
+        <Table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Ticker</th>
+            <th>Price</th>
+            {props.showBalance ? <th>Balance</th> : null}
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {
+            props.coinData.map( ({key, name, ticker, price, balance}) =>
+            <Coin key={key} 
+                handleRefresh={props.handleRefresh}
+                name={name} 
+                id = {key} 
+                price={price} 
+                ticker={ticker}
+                showBalance={props.showBalance}
+                balance={balance} 
+                />
+            )
+        }
+        </tbody>
+    </Table>
+    )
 }
