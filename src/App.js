@@ -6,14 +6,18 @@ import Footer from './components/Footer/Footer'
 import styled from 'styled-components';
 import axios from 'axios';
 
+//import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootswatch/dist/flatly/bootstrap.min.css'
+import '@fortawesome/fontawesome-free/js/all'
+
 const StyledDiv = styled.div`
 background-color: #282c34;
-align-items: center;
+text-align: center;
 color: lightpink;
 `;
 
 const COIN_COUNT = 10;
-const formatPrice = price => parseFloat(Number(price).toFixed(4));
+const formatPrice = price => parseFloat(Number(price).toFixed(2));
 
 function App(props) {
   const [balance, setBalance] = useState(10000);
@@ -47,7 +51,7 @@ function App(props) {
   });
 
 
-  const handleBalanceVisibilityChange = () => {
+  const handleVisibilityChange = () => {
     setShowBalance(oldValue => !oldValue);
   }
 
@@ -67,13 +71,18 @@ function App(props) {
     setCoinData(newCoinData);
   }
 
+  const handleAirdrop = () => {
+    setBalance(oldValue => oldValue + 1200);
+  }
+
   return (
     <StyledDiv className="App">
       <AppHeader />
       <AccountBalance 
         amount={balance} 
         showBalance={showBalance} 
-        handleBalanceVisibilityChange={handleBalanceVisibilityChange} />
+        handleVisibilityChange={handleVisibilityChange} 
+        handleAirdrop={handleAirdrop}/>
       <CoinList 
         coinData={coinData} 
         showBalance={showBalance}
