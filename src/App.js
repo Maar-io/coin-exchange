@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import CoinList from './components/CoinList/CoinList';
 import AccountBalance from './components/AccountBalance/AccountBalance';
 import AppHeader from './components/AppHeader/AppHeader';
+import Footer from './components/Footer/Footer'
 import styled from 'styled-components';
 import axios from 'axios';
 
@@ -77,6 +78,7 @@ function App(props) {
         coinData={coinData} 
         showBalance={showBalance}
         handleRefresh={handleRefresh} />
+      <Footer/>
     </StyledDiv>
   );
 
