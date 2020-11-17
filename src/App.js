@@ -1,81 +1,86 @@
-import React from 'react';
-//import './App.css';
-import AppHeader from './components/AppHeader/AppHeader';
+import React, {useState, useEffect} from 'react';
 import CoinList from './components/CoinList/CoinList';
 import AccountBalance from './components/AccountBalance/AccountBalance';
-import styled from 'styled-components'
+import AppHeader from './components/AppHeader/AppHeader';
+import styled from 'styled-components';
 import axios from 'axios';
 
 const StyledDiv = styled.div`
-    background-color: #282c34;
-    align-items: center;
-    color: lightpink;
+background-color: #282c34;
+align-items: center;
+color: lightpink;
 `;
-const COIN_COUNT = 6;
-const COIN_URL = 'https://api.coinpaprika.com/v1/coins';
-const TICKER_URL = 'https://api.coinpaprika.com/v1/tickers/';
 
-class App extends React.Component {
-  state = {
-    balance: 10000,
-    showBalance: true,
-    coinData: [ ]
-  }
+const COIN_COUNT = 10;
+const formatPrice = price => parseFloat(Number(price).toFixed(4));
 
-  componentDidMount = async () => {
-    const response = await axios.get(COIN_URL)
-    const coinIds = response.data.slice(0, COIN_COUNT).map( coin => coin.id );
-    const promises = coinIds.map( id => axios.get( TICKER_URL + id ));
-    const coinData = await Promise.all( promises );
-    const newCoinData = coinData.map( function(response) {
+function App(props) {
+  const [balance, setBalance] = useState(10000);
+  const [showBalance, setShowBalance] = useState(true);
+  const [coinData, setCoinData] = useState([]);
+
+  // this is local componentDidMount, not from React statefull component
+  const componentDidMount = async () => {
+    const response = await axios.get('https://api.coinpaprika.com/v1/coins');
+    const coinIds = response.data.slice(0, COIN_COUNT).map(coin => coin.id);
+    const tickerUrl = 'https://api.coinpaprika.com/v1/tickers/';
+    const promises = coinIds.map(id => axios.get(tickerUrl + id));
+    const coinData = await Promise.all(promises);
+    const coinPriceData = coinData.map(function(response) { 
       const coin = response.data;
       return {
         key: coin.id,
         name: coin.name,
         ticker: coin.symbol,
         balance: 0,
-        price: parseFloat(Number(coin.quotes.USD.price).toFixed(2)),
+        price: formatPrice(coin.quotes.USD.price),
       };
     });
-    this.setState({ coinData: newCoinData });
+    setCoinData(coinPriceData);
+  }  
+
+  useEffect(function() {
+    if (coinData.length === 0 ) {
+      componentDidMount();
+    }
+  });
+
+
+  const handleBalanceVisibilityChange = () => {
+    setShowBalance(oldValue => !oldValue);
   }
 
-  handleVisibilityChange = () => {
-    this.setState( function(oldState) {
-      return{
-        ...oldState,
-        showBalance: !oldState.showBalance
+  const handleRefresh = async (valueChangeId) => {
+    const tickerUrl = `https://api.coinpaprika.com/v1/tickers/${valueChangeId}`;
+    const response = await axios.get(tickerUrl);
+    debugger;
+    const newPrice = formatPrice(response.data.quotes.USD.price);
+    const newCoinData = coinData.map( function( values ) {
+      let newValues = { ...values };
+      if ( valueChangeId === values.key ) {
+        newValues.price = newPrice;
       }
-    });
-  }
-
-  handleRefresh = async (valueChangeTicker) => {
-    const keyData =  await axios.get( TICKER_URL + valueChangeTicker);
-    
-    const newCoinData = this.state.coinData.map( function( values ) {
-      let newValues = {...values};
-      if (values.key === valueChangeTicker) {
-        newValues.price = parseFloat(Number( keyData.data.quotes["USD"].price ).toFixed(4));
-      };
       return newValues;
     });
-    this.setState({ coinData: newCoinData });
+    
+    setCoinData(newCoinData);
   }
 
-  render() {
-    return (
-      <StyledDiv>
-        <AppHeader/>
-        <AccountBalance amount={this.state.balance} 
-            showBalance={this.state.showBalance} 
-            handleVisibilityChange={this.handleVisibilityChange}/>
-        <CoinList coinData={this.state.coinData} 
-            showBalance = {this.state.showBalance}
-            handleRefresh={this.handleRefresh}/>
-      </StyledDiv>
+  return (
+    <StyledDiv className="App">
+      <AppHeader />
+      <AccountBalance 
+        amount={balance} 
+        showBalance={showBalance} 
+        handleBalanceVisibilityChange={handleBalanceVisibilityChange} />
+      <CoinList 
+        coinData={coinData} 
+        showBalance={showBalance}
+        handleRefresh={handleRefresh} />
+    </StyledDiv>
   );
-  }
-  
+
+
 }
 
 export default App;
