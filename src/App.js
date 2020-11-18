@@ -13,7 +13,7 @@ import '@fortawesome/fontawesome-free/js/all'
 const StyledDiv = styled.div`
 background-color: #282c34;
 text-align: center;
-color: lightpink;
+color: seashell;
 `;
 
 const COIN_COUNT = 10;
@@ -43,7 +43,7 @@ function App(props) {
     });
     setCoinData(coinPriceData);
   }  
-
+  
   useEffect(function() {
     if (coinData.length === 0 ) {
       componentDidMount();

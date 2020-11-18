@@ -6,7 +6,7 @@ const TableData = styled.td`
     border: 1px solid;
     width: 36vh;
     color: dimgray;
-    background-color: lightpink;
+    background-color: seashell;
     text-align: center;
     margin: 50px auto 50px auto;
     font-size: 1.4rem;
@@ -16,10 +16,7 @@ const TDControl = styled(TableData)`
     width: 36vw;
 `;
 
-const ButtonO = styled.button`
-    font-size: 12px;
-    `;
-    const Button = styled.button`
+const Button = styled.button`
     font-size: 12 px; 
     width: 64px;
     line-height: 12 px; 
@@ -27,7 +24,7 @@ const ButtonO = styled.button`
     border-radius: 5px; 
     margin: 3px 5px 0;
     border: 2px solid rgb(28, 110, 164); 
-    `;
+`;
 
 export default function Coin(props) {
 

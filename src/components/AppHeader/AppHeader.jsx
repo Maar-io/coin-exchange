@@ -7,9 +7,9 @@ export default class AppHeader extends Component {
     render() {
         return (
           <header className="Header">
-          <img src={logo} alt="Substrate logo" className="App-logo" />
+          <img src={logo} alt="Top 10 Coins" className="App-logo" />
             <h1 className="Title">
-              Substrate Ecosystem prices
+            Top 10 Crypto Coins
             </h1>
           </header>
         )

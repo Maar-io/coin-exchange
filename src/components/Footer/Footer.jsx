@@ -11,7 +11,7 @@ export default class Footer extends Component{
                 </div>
                 <hr/>
                 <div>
-                    <p >by: <a className="link" href="https://github.com/Maar-io">Maar.io</a></p>
+                    <p >Designed by: <a className="link" href="https://github.com/Maar-io">Maar.io</a></p>
                 </div>
             </div>
             </footer>

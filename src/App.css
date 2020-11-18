@@ -15,7 +15,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-  color: lightpink;
+  color: seashell;
 }
 
 .App-title{
@@ -30,7 +30,7 @@
   border: 1px;
   display:inline-block;
   font-size: 1.4rem;
-  background-color: lightpink;
+  background-color: seashell;
   color: black;
 }
 @keyframes App-logo-spin {
