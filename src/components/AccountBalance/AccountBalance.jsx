@@ -28,7 +28,7 @@ const Balance = styled.div
 export default function AccountBalance (props) {
     const buttonText = props.showBalance ? 'Hide balance': 'Show balance';
     let content = '\u00A0';
-    const buttonClass = 'btn ' + (props.showBalance ? 'btn-warning' : 'btn-info');
+    const buttonClass = 'btn ' + (props.showBalance ? 'btn-default' : 'btn-info');
     if ( props.showBalance ) {
         content = <>Balance: $ {props.amount}</>
     }

@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 
 //import 'bootstrap/dist/css/bootstrap.min.css'
-import 'bootswatch/dist/flatly/bootstrap.min.css'
+import 'bootswatch/dist/slate/bootstrap.min.css'
 import '@fortawesome/fontawesome-free/js/all'
 
 const StyledDiv = styled.div`
@@ -20,7 +20,7 @@ const COIN_COUNT = 10;
 const formatPrice = price => parseFloat(Number(price).toFixed(2));
 
 function App(props) {
-  const [balance, setBalance] = useState(10000);
+  const [balance, setBalance] = useState(20000);
   const [showBalance, setShowBalance] = useState(true);
   const [coinData, setCoinData] = useState([]);
 
@@ -71,6 +71,19 @@ function App(props) {
     setCoinData(newCoinData);
   }
 
+  const handleTransaction = (isBuy, valueChangeId) => { 
+    const balanceChange = isBuy ? 1 : -1;
+    const newCoinData = coinData.map( function( values ) {
+      let newValues = { ...values };
+      if ( valueChangeId === values.key ) {
+        newValues.balance += balanceChange;
+        setBalance( oldBalance => oldBalance - balanceChange * newValues.price );
+      }
+      return newValues;
+    });    
+    setCoinData(newCoinData);
+  }
+
   const handleAirdrop = () => {
     setBalance(oldValue => oldValue + 1200);
   }
@@ -86,7 +99,8 @@ function App(props) {
       <CoinList 
         coinData={coinData} 
         showBalance={showBalance}
-        handleRefresh={handleRefresh} />
+        handleRefresh={handleRefresh} 
+        handleTransaction={handleTransaction}/>
       <Footer/>
     </StyledDiv>
   );

@@ -1,5 +1,5 @@
 .Header {
-    background-color: #282c34;
+    background-color: #2f2834;
     min-height: 20vh;
     display: flex;
     flex-direction: row;
@@ -11,10 +11,12 @@
 
   .Title {
     font-size: 3rem;
-  }
+    margin-left: 50px;
+}
 
-  .App-logo {
+.App-logo {
     height: 8rem;
+    margin-left: 20px;
     pointer-events: none;
   }
 

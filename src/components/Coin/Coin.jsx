@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 const TableData = styled.td`
     border: 1px solid;
-    width: 25vh;
+    width: 36vh;
     color: dimgray;
     background-color: lightpink;
     text-align: center;
@@ -12,17 +12,36 @@ const TableData = styled.td`
     font-size: 1.4rem;
     
 `;
-/*
-display:inline-block;
-border: 1px;
-background-color: lightpink;
-color: black;
-*/
+const TDControl = styled(TableData)`
+    width: 36vw;
+`;
+
+const ButtonO = styled.button`
+    font-size: 12px;
+    `;
+    const Button = styled.button`
+    font-size: 12 px; 
+    width: 64px;
+    line-height: 12 px; 
+    padding: 4px; 
+    border-radius: 5px; 
+    margin: 3px 5px 0;
+    border: 2px solid rgb(28, 110, 164); 
+    `;
+
 export default function Coin(props) {
 
-    const handleClick = (event) => {
+    const handleRefresh = (event) => {
         event.preventDefault();
-        props.handleRefresh(props.id)
+        props.handleRefresh(props.id);
+    }
+    const handleBuy = (event) => {
+        event.preventDefault();
+        props.handleTransaction(true, props.id);
+    }
+    const handleSell = (event) => {
+        event.preventDefault();
+        props.handleTransaction(false, props.id);
     }
 
     return (
@@ -31,11 +50,22 @@ export default function Coin(props) {
             <TableData>{props.ticker}</TableData>
             <TableData>${props.price}</TableData>
             {props.showBalance ? <TableData>{props.balance}</TableData> : null}
-            <TableData>
+            <TDControl>
                 <form action="">
-                    <button onClick={handleClick}>Refresh</button>
+                    <Button className='btn btn-info' 
+                            onClick={handleRefresh}>
+                        Refresh
+                    </Button>
+                    <Button className='btn btn-warning' 
+                            onClick={handleBuy}>
+                        Buy
+                    </Button>
+                    <Button className='btn btn-danger' 
+                            onClick={handleSell}>
+                        Sell
+                    </Button>
                 </form>
-            </TableData>
+            </TDControl>
         </tr>
     );
 }
